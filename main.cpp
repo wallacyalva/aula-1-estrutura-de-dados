@@ -14,9 +14,9 @@ int main() {
     // l.ultimo = -1;
 
     // inserir alguns valores
-    l.inserir("um");
-    l.inserir("dois");
-    l.inserir("tres", 1); // insere "tres" na posição 1 (desloca lógica depende da sua implementação)
+    l.inserir("um",false);
+    l.inserir("dois",true);
+    l.inserir("tres",false, 1); // insere "tres" na posição 1 (desloca lógica depende da sua implementação)
 
     cout << "Conteúdo da lista: ";
     l.mostrar();

@@ -22,12 +22,15 @@ template <typename T> struct Lista{
             return T{};
         }
     };
-    void iniciar(){
+    bool iniciar(){
         T valorBase = valorPadrao();
+        ultimo = -1;
 
         for (int i = 0; i < TAM; i++){
             vetor[i] = valorBase;
         }
+        
+        return true;
     };
     void reOrdenar(int indexBase = 0){
         int index = indexBase;
@@ -40,17 +43,35 @@ template <typename T> struct Lista{
         vetor[ultimo] = valorBase;
         ultimo--;
     };
-    void inserir(T valor, int index = -1){
-        if (index < 0 || index >= TAM){ 
+    bool inserir(T valor,bool ordenar = false ,int index = -1){
+        if (index < 0){ 
             index = ultimo + 1;
         }
 
+        if(index >= TAM){
+            return false;
+        }
+
         if(index < TAM){
-            vetor[index] = valor;
-            if(index > ultimo){
-                ultimo = index;
+            if(ordenar){
+                int ultimoIndex = ultimo;
+                while(ultimoIndex != -1){
+                    if(vetor[ultimoIndex] > valor){
+                        vetor[ultimoIndex + 1] = vetor[ultimoIndex]; 
+                        ultimoIndex--
+                    }else{
+                        vetor[ultimoIndex + 1] = valor;
+                        ultimoIndex = -1;
+                    }
+                }
+            }else{
+                vetor[index] = valor;
+                if(index > ultimo){
+                    ultimo = index;
+                }
             }
         }
+        return true;
     };
     int pesquisar(T valor){
         int index = 0;
@@ -80,9 +101,10 @@ template <typename T> struct Lista{
 
         return true;
     };
-    void mostrar(){
+    bool mostrar(){
         for (int i = 0; i <= ultimo; i++){
             cout << vetor[i] << ((i != ultimo) ? "," : "\n");
         }
+        return true;
     }
 };
