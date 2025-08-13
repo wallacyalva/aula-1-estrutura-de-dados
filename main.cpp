@@ -5,35 +5,72 @@
 #include <string>
 using namespace std;
 
+template <typename T> int pegaQuantida(Lista<T> L) {
+    return L.ultimo + 1;
+}
+
+template <typename T> bool saoIguais(Lista<T> L) {
+    // return L.ultimo + 1;
+}
+
 int main() {
-    Lista<string> l;
-    l.iniciar();
+    int digitado = 0;
+    int menu = 1;
+    
+    // do{
+    //     if(menu != 1){
+    //         cout << "O menu escolhido é invalido tente novamente: \n";
+    //     }
+    //     cout << "Qual exercicio voce quer testar ? (1,2,3)";
+    //     cin >> menu;
+    // } while (menu != 1 || menu != 2 || menu != 3);
 
-    // opcional: marcar como vazia se sua Lista usa ultimo = 0 como "ocupado"
-    // se você preferir que uma lista vazia tenha ultimo = -1, descomente:
-    // l.ultimo = -1;
+    // switch (menu){
+    //     case 1:{
+    //         Lista<int> l;
+    //         while (digitado != '0' && l.ultimo + 1 != TAM){
+    //             cout << "digite um valor (0 finaliza o codigo):";
+    //             cin >> digitado;
 
-    // inserir alguns valores
-    l.inserir("um",false);
-    l.inserir("dois",true);
-    l.inserir("tres",false, 1); // insere "tres" na posição 1 (desloca lógica depende da sua implementação)
+    //             if(digitado != '0'){
+    //                 l.inserir(digitado);
+    //             }
+    //         }
+            
+    //         cout << pegaQuantida<int>(l) << "\n";
+    //     }
+    //     break;
+    //     case 2:{
+            
+    //     }
+    //     break;
+    //     case 3:{
 
-    cout << "Conteúdo da lista: ";
-    l.mostrar();
+    //     }
+    //     break;
+    // }
 
-    int pos = l.pesquisar("tres");
-    if (pos != -1)
-        cout << "\"tres\" encontrado na posição " << pos << "\n";
-    else
-        cout << "\"tres\" não encontrado\n";
 
-    // remover e mostrar de novo
-    if (l.retirar("tres")) {
-        cout << "Depois de retirar \"tres\": ";
-        l.mostrar();
-    } else {
-        cout << "Não foi possível retirar \"tres\" (não encontrado)\n";
-    }
+
+     
+    Lista<int> l1;
+    Lista<int> l2;
+
+    l1.inserir(1);
+    l1.inserir(2);
+    l1.inserir(3);
+    l1.inserir(4);
+    l1.inserir(5);
+
+    l2.inserir(5);
+    l2.inserir(2);
+    l2.inserir(4);
+    l2.inserir(3);
+    l2.inserir(1);
+
+    
+
+
 
     return 0;
 }

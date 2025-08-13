@@ -9,42 +9,22 @@ using namespace std;
 template <typename T> struct Lista{
     T vetor[TAM];
     int ultimo = -1;
-    T valorPadrao(){
-        if constexpr (is_same<T, bool>::value) {
-            return false;
-        } else if constexpr (is_same<T, char>::value) {
-            return ' ';
-        } else if constexpr (is_same<T, int>::value) {
-            return 0;
-        } else if constexpr (is_same<T, string>::value) {
-            return "";
-        } else {
-            return T{};
-        }
-    };
     bool iniciar(){
-        T valorBase = valorPadrao();
         ultimo = -1;
 
-        for (int i = 0; i < TAM; i++){
-            vetor[i] = valorBase;
-        }
-        
         return true;
     };
     void reOrdenar(int indexBase = 0){
         int index = indexBase;
-        T valorBase = valorPadrao();
 
         while (index < ultimo) {
             vetor[index] = vetor[index + 1];
             index++;
         }
-        vetor[ultimo] = valorBase;
         ultimo--;
     };
     bool inserir(T valor,bool ordenar = false ,int index = -1){
-        if (index < 0){ 
+        if (index < 0){
             index = ultimo + 1;
         }
 
@@ -52,31 +32,29 @@ template <typename T> struct Lista{
             return false;
         }
 
-        if(index < TAM){
-            if(ordenar){
-                int ultimoIndex = ultimo;
-                while(ultimoIndex != -1){
-                    if(vetor[ultimoIndex] > valor){
-                        vetor[ultimoIndex + 1] = vetor[ultimoIndex]; 
-                        ultimoIndex--
-                    }else{
-                        vetor[ultimoIndex + 1] = valor;
-                        ultimoIndex = -1;
-                    }
-                }
-            }else{
-                vetor[index] = valor;
-                if(index > ultimo){
-                    ultimo = index;
+        if(ordenar){
+            int ultimoIndex = ultimo;
+            while(ultimoIndex != -1){
+                if(vetor[ultimoIndex] > valor){
+                    vetor[ultimoIndex + 1] = vetor[ultimoIndex];
+                    ultimoIndex--;
+                }else{
+                    vetor[ultimoIndex + 1] = valor;
+                    ultimoIndex = -1;
                 }
             }
+        }else{
+            vetor[index] = valor;
         }
+
+        ultimo = index;
+
         return true;
     };
     int pesquisar(T valor){
         int index = 0;
         bool achado = false;
-        
+
         while (!achado && index <= ultimo){
             if(vetor[index] == valor){
                 achado = true;
@@ -84,7 +62,7 @@ template <typename T> struct Lista{
                 index ++;
             }
         }
-        
+
         return achado ? index : -1;
     };
     bool retirar(T valor){
@@ -92,11 +70,6 @@ template <typename T> struct Lista{
         if(index == -1){
             return false;
         }
-
-        T valorBase = valorPadrao();
-
-        vetor[index] = valorBase;
-
         reOrdenar(index);
 
         return true;
