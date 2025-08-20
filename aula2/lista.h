@@ -1,89 +1,129 @@
-#ifndef TAM
-#define TAM 50
-#endif
 using namespace std;
 #include <iostream>
 #include <string>
-#include <type_traits>
 
 template <typename T> struct No{
     T valor;
-    No proximo = NULL;
+    No <T> *next = NULL;
 };
 
 template <typename T> struct Lista{
-    T vetor(int index){
-
-    };
-    int ultimo = -1;
-    int quantidade = 0;
+    No <T> *comeco = NULL, *fim = NULL;
+    int count = 0;
 
     bool iniciar(){
-        ultimo = -1;
-
+        comeco = NULL;
+        fim = NULL;
+        count = 0;
         return true;
     };
 
-    void reOrdenar(int indexBase = 0){
-        int index = indexBase;
-
-        while (index < ultimo) {
-            vetor[index] = vetor[index + 1];
-            index++;
-        }
-        ultimo--;
-    };
     bool inserir(T valor,bool ordenar = false ,int index = -1){
-        if (index < 0){
-            index = ultimo + 1;
+        No <T> *novo = new No<T>;
+        if( novo == NULL ){
+            return false
+        };
+        novo->valor = valor;
+        novo->next = NULL;
+        
+        // Lista vazia
+        if( comeco == NULL ){ 
+            comeco = novo;
+            fim = novo;
+            return true;
+        }
+        
+        // Insere no começo
+        if( valor < comeco->valor ){
+            novo->next = comeco;
+            comeco = novo;
+            return true;
         }
 
-        if(ordenar){
-            int ultimoIndex = ultimo;
-            while(ultimoIndex != -1){
-                if(vetor[ultimoIndex] > valor){
-                    vetor[ultimoIndex + 1] = vetor[ultimoIndex];
-                    ultimoIndex--;
-                }else{
-                    vetor[ultimoIndex + 1] = valor;
-                    ultimoIndex = -1;
-                }
+        // Insere no final
+        if( valor > fim->valor ){
+            fim->next = novo;
+            fim = novo;
+            return true;
+        }
+
+        // Insere no meio da lista
+        No <T> *ant = comeco;
+        No <T> *prox = ant->next;
+        while( prox != NULL ){
+            if( ant->valor < valor && valor < prox->valor ){
+                ant->next = novo;
+                novo->next = prox;
+                return true;
             }
-        }else{
-            vetor[index] = valor;
+            ant = prox;
+            prox = ant->next;
         }
 
-        ultimo = index;
-
-        return true;
+        return false;
     };
-    int pesquisar(T valor){
-        int index = 0;
-        bool achado = false;
+    
+    No <T> * pesquisar(T valor){
+        No <T> *aux = comeco;
 
-        while (!achado && index <= ultimo){
-            if(vetor[index] == valor){
-                achado = true;
-            }else{
-                index ++;
-            }
+        while( aux != NULL ){
+            if( aux->valor == valor ) return aux;
+            aux = aux->next;
         }
-
-        return achado ? index : -1;
+        return NULL;
     };
+
     bool retirar(T valor){
-        int index = pesquisar(valor);
-        if(index == -1){
-            return false;
-        }
-        reOrdenar(index);
+        No <T> *ant = NULL, *aux = comeco;
 
+        while( aux != NULL ){
+            if( valor == aux->valor ) break;
+            ant = aux;
+            aux = aux->next;
+        }
+        if( aux == NULL ) return false;
+
+        if( aux == comeco && aux == fim ){ // Unico elemento
+            comeco = NULL;
+            fim = NULL;
+            delete aux;
+            return true;
+        }
+        if( aux == comeco ){ // Retirando o primeiro
+            comeco = aux->next;
+            delete aux;
+            return true;
+        }
+        if( aux == fim ){ // Retirando o ultimo
+            ant->next = NULL;
+            fim = ant;
+            delete aux;
+            return true;
+        }
+        // Retirando do meio
+        ant->next = aux->next;
+        delete aux;
         return true;
     };
+
     bool mostrar(){
-        for (int i = 0; i <= ultimo; i++){
-            cout << vetor[i] << ((i != ultimo) ? "," : "\n");
+        No <T> *aux = comeco;
+
+        while( aux != NULL ){
+            cout << aux->valor << ((aux->next != NULL) ? "," : "\n");
+            aux = aux->next;
         }
         return true;
     }
+
+    int comprimento(){
+        No <T> *aux = comeco;
+        int count = 0;
+
+        while( aux != NULL ){
+            aux = aux->next;
+            count++;
+        }
+    }
+    
 };
